@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vedam Assessment Results</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Yatra+One&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ivory:#FAF4E7;
+    --ivory-deep:#F1E7D2;
+    --maroon:#6E1F2B;
+    --maroon-deep:#4F1520;
+    --saffron:#E08A2B;
+    --saffron-deep:#C97223;
+    --gold:#B4901F;
+    --ink:#2B1B14;
+    --ink-soft:#6b5c50;
+    --line:#e3d6bd;
+    --white:#FFFDF8;
+    --grade-a:#3F7D4F;
+    --grade-b:#2E6E8E;
+    --grade-c:#B4592A;
+    --grade-re:#8B5E77;
+    --grade-absent:#8A8078;
+    --grade-cert:#A6821E;
+  }
+  *{box-sizing:border-box;}
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--ivory);
+    color:var(--ink);
+    font-family:'Mukta',sans-serif;
+    line-height:1.5;
+    min-height:100vh;
+  }
+  a{color:var(--maroon);}
+
+  header.arch{
+    background:linear-gradient(180deg,var(--maroon) 0%,var(--maroon-deep) 100%);
+    color:var(--ivory);
+    text-align:center;
+    padding:34px 20px 26px;
+  }
+  header.arch .diya{margin:0 auto 6px;display:block;}
+  header.arch h1{
+    font-family:'Yatra One',cursive;
+    font-weight:400;
+    font-size:clamp(24px,5vw,34px);
+    margin:4px 0 6px;
+    letter-spacing:0.3px;
+  }
+  header.arch p{
+    margin:0;
+    font-size:14px;
+    color:#EBD9C4;
+    letter-spacing:0.4px;
+  }
+  .garland{
+    height:14px;
+    background-image:radial-gradient(circle at 7px 0, transparent 6px, var(--saffron) 7px);
+    background-size:14px 14px;
+    background-repeat:repeat-x;
+    opacity:0.75;
+  }
+
+  .container{
+    max-width:600px;
+    margin:0 auto;
+    padding:26px 18px 60px;
+  }
+
+  .card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:22px;
+    box-shadow:0 2px 10px rgba(78,40,20,0.06);
+  }
+
+  .tabs{
+    display:flex;
+    gap:8px;
+    margin-bottom:20px;
+  }
+  .tab{
+    flex:1;
+    padding:11px 8px;
+    border:1px solid var(--maroon);
+    background:transparent;
+    color:var(--maroon);
+    font-family:'Mukta',sans-serif;
+    font-weight:600;
+    font-size:15px;
+    border-radius:10px;
+    cursor:pointer;
+  }
+  .tab.active{
+    background:var(--maroon);
+    color:var(--ivory);
+  }
+  .tab:focus-visible, button:focus-visible, input:focus-visible{
+    outline:3px solid var(--saffron-deep);
+    outline-offset:2px;
+  }
+
+  label{
+    display:block;
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink-soft);
+    margin:14px 0 6px;
+  }
+  input[type=tel], input[type=password], input[type=text]{
+    width:100%;
+    padding:12px 13px;
+    font-size:16px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    background:var(--ivory-deep);
+    color:var(--ink);
+    font-family:'Mukta',sans-serif;
+  }
+  .hint{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    margin-top:6px;
+  }
+  button.primary{
+    width:100%;
+    margin-top:20px;
+    padding:13px;
+    font-size:16px;
+    font-weight:700;
+    background:var(--saffron-deep);
+    color:var(--white);
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-family:'Mukta',sans-serif;
+  }
+  button.primary:hover{background:var(--maroon);}
+  button.primary:disabled{opacity:0.55;cursor:not-allowed;}
+
+  .status{
+    text-align:center;
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-top:14px;
+  }
+  .error{
+    background:#F7E3DE;
+    border:1px solid #E3A995;
+    color:#7A2A17;
+    padding:11px 13px;
+    border-radius:9px;
+    font-size:14px;
+    margin-top:16px;
+  }
+  .hidden{display:none !important;}
+
+  .blessing{
+    font-family:'Yatra One',cursive;
+    color:var(--maroon-deep);
+    text-align:center;
+    font-size:17px;
+    line-height:1.6;
+    padding:6px 4px 18px;
+    border-bottom:1px dashed var(--line);
+    margin-bottom:18px;
+  }
+
+  .who-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:16px;
+  }
+  .who-bar .name{font-weight:700;font-size:16px;}
+  .who-bar .sub{font-size:12.5px;color:var(--ink-soft);}
+  .logout{
+    background:none;
+    border:1px solid var(--line);
+    color:var(--ink-soft);
+    font-size:12.5px;
+    padding:7px 12px;
+    border-radius:8px;
+    cursor:pointer;
+    font-family:'Mukta',sans-serif;
+  }
+
+  .student-block{
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:14px 16px;
+    margin-bottom:14px;
+    background:var(--ivory-deep);
+  }
+  .student-block .s-name{font-weight:700;font-size:15.5px;}
+  .student-block .s-phone{font-size:12.5px;color:var(--ink-soft);margin-bottom:8px;}
+
+  .result-row{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:13px 14px;
+    margin-top:10px;
+  }
+  .result-row .r-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:6px;
+  }
+  .level-tag{
+    font-weight:700;
+    font-size:14px;
+    color:var(--maroon);
+  }
+  .grade-badge{
+    display:inline-block;
+    padding:3px 11px;
+    border-radius:20px;
+    color:var(--white);
+    font-weight:700;
+    font-size:12.5px;
+    letter-spacing:0.3px;
+  }
+  .g-a{background:var(--grade-a);}
+  .g-b{background:var(--grade-b);}
+  .g-c{background:var(--grade-c);}
+  .g-re{background:var(--grade-re);}
+  .g-absent{background:var(--grade-absent);}
+  .g-cert{background:var(--grade-cert);}
+  .g-other{background:var(--ink-soft);}
+
+  .remarks{
+    font-size:13.5px;
+    color:var(--ink);
+    line-height:1.55;
+  }
+  .remarks .r-label{
+    font-weight:600;
+    color:var(--ink-soft);
+    display:block;
+    font-size:11.5px;
+    text-transform:uppercase;
+    letter-spacing:0.4px;
+    margin-bottom:2px;
+  }
+  .trainer-line{
+    font-size:12px;
+    color:var(--ink-soft);
+    margin-top:8px;
+    padding-top:8px;
+    border-top:1px solid var(--line);
+  }
+
+  footer.note{
+    text-align:center;
+    font-size:12px;
+    color:var(--ink-soft);
+    margin-top:26px;
+    padding:0 10px;
+  }
+</style>
+</head>
+<body>
+
+<header class="arch">
+  <svg class="diya" width="66" height="52" viewBox="0 0 100 80" aria-hidden="true">
+    <ellipse cx="50" cy="55" rx="34" ry="9" fill="none" stroke="#E0C078" stroke-width="2.5"/>
+    <path d="M50 55 C 20 55, 20 32, 50 32 C 80 32, 80 55, 50 55 Z" fill="#E08A2B" opacity="0.18"/>
+    <path d="M50 13 C 43 25, 43 35, 50 41 C 57 35, 57 25, 50 13 Z" fill="#E08A2B"/>
+    <path d="M50 19 C 47 27, 47 32, 50 35 C 53 32, 53 27, 50 19 Z" fill="#F5D26A"/>
+  </svg>
+  <h1>Vedam Assessment Results</h1>
+  <p>Sri Sathya Sai Seva Organisation &mdash; Vedam Prashikshan</p>
+</header>
+<div class="garland" aria-hidden="true"></div>
+
+<div class="container">
+
+  <div id="loginView" class="card">
+    <div class="tabs">
+      <button type="button" class="tab active" id="tabStudent">Student Login</button>
+      <button type="button" class="tab" id="tabTrainer">Trainer Login</button>
+    </div>
+
+    <form id="loginForm" autocomplete="off">
+      <label for="phoneInput" id="phoneLabel">Your Mobile Number</label>
+      <input type="tel" id="phoneInput" inputmode="numeric" placeholder="10-digit mobile number" required>
+
+      <label for="passwordInput" id="passwordLabel">Password (your Saiconnect ID)</label>
+      <input type="password" id="passwordInput" placeholder="Enter password" required>
+      <p class="hint" id="hintText">Students: use your Saiconnect ID as the password.</p>
+
+      <button type="submit" class="primary" id="submitBtn" disabled>Loading results…</button>
+    </form>
+
+    <p id="errorMsg" class="error hidden"></p>
+    <p class="status" id="loadStatus">Fetching the latest results…</p>
+  </div>
+
+  <div id="resultsView" class="card hidden">
+    <div class="blessing">
+      AUM SRI SAIRAM,<br>
+      WITH THE DIVINE BLESSINGS YOUR RESULTS ARE AS GIVEN BELOW.<br>
+      KINDLY WORK ON THE PARAMETERS ADVISED BY THE ASSESSORS.<br>
+      LET US OFFER OUR LOVE AND GRATITUDE AT THE DIVINE LOTUS FEET.
+    </div>
+    <div class="who-bar">
+      <div>
+        <div class="name" id="whoName"></div>
+        <div class="sub" id="whoSub"></div>
+      </div>
+      <button class="logout" id="logoutBtn">Log out</button>
+    </div>
+    <div id="resultsBody"></div>
+  </div>
+
+  <footer class="note">
+    Results are drawn live from the assessment record sheet, so any update there appears here automatically. This page is a free, self-hosted page with no login database of its own &mdash; it simply matches the phone number and password you enter against the published sheet.
+  </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script>
+(function(){
+  var CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSTsZ-gXnXzeshNHjPTMk90nF51V98ANaczPSQfHwIsoia532cjGt8q1Gnc7_wrB5ceOd0T48FGpYBj/pub?output=csv";
+  var FETCH_CANDIDATES = [
+    CSV_URL,
+    "https://api.allorigins.win/raw?url=" + encodeURIComponent(CSV_URL),
+    "https://corsproxy.io/?url=" + encodeURIComponent(CSV_URL),
+    "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent(CSV_URL),
+    "https://thingproxy.freeboard.io/fetch/" + CSV_URL
+  ];
+
+  var rows = [];
+  var role = "student";
+
+  var loadStatus = document.getElementById('loadStatus');
+  var submitBtn = document.getElementById('submitBtn');
+  var errorMsg = document.getElementById('errorMsg');
+  var loginView = document.getElementById('loginView');
+  var resultsView = document.getElementById('resultsView');
+  var phoneLabel = document.getElementById('phoneLabel');
+  var passwordLabel = document.getElementById('passwordLabel');
+  var hintText = document.getElementById('hintText');
+  var phoneInput = document.getElementById('phoneInput');
+  var passwordInput = document.getElementById('passwordInput');
+
+  function normPhone(s){
+    return (s || '').toString().replace(/\D/g, '').slice(-10);
+  }
+  function normStr(s){
+    return (s || '').toString().trim().toLowerCase();
+  }
+  function trainerPassFromName(name){
+    return (name || '').toString().toLowerCase().replace(/[^a-z]/g, '').slice(0, 6);
+  }
+  function fetchText(url){
+    return fetch(url, {cache: "no-store"}).then(function(res){
+      if(!res.ok) throw new Error('HTTP ' + res.status + ' from ' + url);
+      return res.text();
+    });
+  }
+
+  // Looks like real CSV data (has our expected header) rather than an
+  // error page, a login wall, or an empty proxy response.
+  function looksLikeOurCsv(text){
+    return !!text && text.indexOf('NAME') !== -1 && text.indexOf('MOBILE NUMBER') !== -1;
+  }
+
+  function tryCandidates(candidates, index, lastError){
+    if(index >= candidates.length){
+      return Promise.reject(lastError || new Error('No source worked'));
+    }
+    return fetchText(candidates[index]).then(function(text){
+      if(!looksLikeOurCsv(text)){
+        throw new Error('Response from source ' + index + ' did not look like the results sheet');
+      }
+      return text;
+    }).catch(function(err){
+      return tryCandidates(candidates, index + 1, err);
+    });
+  }
+
+  function loadData(){
+    loadStatus.textContent = "Fetching the latest results…";
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Loading results…";
+    errorMsg.classList.add('hidden');
+
+    tryCandidates(FETCH_CANDIDATES, 0).then(function(text){
+      var parsed = Papa.parse(text, {header: true, skipEmptyLines: true});
+      rows = parsed.data.filter(function(r){ return (r['NAME'] || '').trim() !== ''; });
+      if(!rows.length){
+        throw new Error('Parsed 0 usable rows');
+      }
+      loadStatus.textContent = rows.length + " assessment records loaded just now.";
+      submitBtn.disabled = false;
+      submitBtn.textContent = "View My Results";
+    }).catch(function(err){
+      console.error('Vedam results: all fetch sources failed.', err);
+      loadStatus.innerHTML = "Could not load results right now. This is usually a temporary network or proxy issue, not a problem with your login details. " +
+        '<button type="button" id="retryLoadBtn" style="margin-left:6px;background:none;border:1px solid var(--maroon);color:var(--maroon);border-radius:8px;padding:4px 10px;cursor:pointer;font-family:Mukta,sans-serif;">Retry</button>';
+      var retryBtn = document.getElementById('retryLoadBtn');
+      if(retryBtn){ retryBtn.addEventListener('click', loadData); }
+    });
+  }
+  loadData();
+
+  function setRole(r){
+    role = r;
+    document.getElementById('tabStudent').classList.toggle('active', r === 'student');
+    document.getElementById('tabTrainer').classList.toggle('active', r === 'trainer');
+    errorMsg.classList.add('hidden');
+    if(r === 'student'){
+      phoneLabel.textContent = "Your Mobile Number";
+      passwordLabel.textContent = "Password (your Saiconnect ID)";
+      hintText.textContent = "Students: use your Saiconnect ID as the password.";
+      phoneInput.placeholder = "10-digit mobile number";
+    } else {
+      phoneLabel.textContent = "Your Trainer Mobile Number";
+      passwordLabel.textContent = "Password (first 6 letters of your name)";
+      hintText.textContent = "Trainers: password is the first 6 letters of your name, lower case, no spaces (e.g. Amrutha Madhuri \u2192 amruth).";
+      phoneInput.placeholder = "10-digit mobile number";
+    }
+  }
+  document.getElementById('tabStudent').addEventListener('click', function(){ setRole('student'); });
+  document.getElementById('tabTrainer').addEventListener('click', function(){ setRole('trainer'); });
+
+  function gradeClass(g){
+    var v = normStr(g);
+    if(v === 'a') return 'g-a';
+    if(v === 'b') return 'g-b';
+    if(v === 'c') return 'g-c';
+    if(v.indexOf('re-assessment') !== -1 || v.indexOf('reassessment') !== -1) return 'g-re';
+    if(v.indexOf('absent') !== -1) return 'g-absent';
+    if(v.indexOf('certificate') !== -1) return 'g-cert';
+    return 'g-other';
+  }
+
+  function resultRowHTML(r, showTrainer){
+    var level = (r['LEVEL'] || '').trim() || 'Not specified';
+    var grade = (r['RESULTS GRADE'] || '').trim() || 'Not recorded';
+    var remarks = (r['REMARKS'] || '').trim() || 'No remarks recorded.';
+    var trainerLine = '';
+    if(showTrainer){
+      trainerLine = '<div class="trainer-line">Trainer: ' + escapeHtml(r['TRAINER NAME'] || '\u2014') + '</div>';
+    }
+    return '' +
+      '<div class="result-row">' +
+        '<div class="r-top">' +
+          '<span class="level-tag">' + escapeHtml(level) + '</span>' +
+          '<span class="grade-badge ' + gradeClass(grade) + '">' + escapeHtml(grade) + '</span>' +
+        '</div>' +
+        '<div class="remarks"><span class="r-label">Remarks</span>' + escapeHtml(remarks) + '</div>' +
+        trainerLine +
+      '</div>';
+  }
+
+  function escapeHtml(s){
+    return (s || '').toString()
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function showStudentResults(matches, phone){
+    var whoName = document.getElementById('whoName');
+    var whoSub = document.getElementById('whoSub');
+    whoName.textContent = matches[0]['NAME'];
+    whoSub.textContent = 'Mobile: ' + phone;
+    var body = document.getElementById('resultsBody');
+    var html = '';
+    matches.forEach(function(r){ html += resultRowHTML(r, true); });
+    body.innerHTML = html;
+  }
+
+  function showTrainerResults(matches, trainerName){
+    var whoName = document.getElementById('whoName');
+    var whoSub = document.getElementById('whoSub');
+    whoName.textContent = trainerName;
+    whoSub.textContent = matches.length + ' assessment record(s) across your students';
+    var groups = {};
+    var order = [];
+    matches.forEach(function(r){
+      var key = normPhone(r['MOBILE NUMBER']) + '|' + normStr(r['NAME']);
+      if(!groups[key]){ groups[key] = []; order.push(key); }
+      groups[key].push(r);
+    });
+    var html = '';
+    order.forEach(function(key){
+      var group = groups[key];
+      var first = group[0];
+      html += '<div class="student-block">' +
+        '<div class="s-name">' + escapeHtml(first['NAME']) + '</div>' +
+        '<div class="s-phone">Mobile: ' + escapeHtml(first['MOBILE NUMBER']) + '</div>';
+      group.forEach(function(r){ html += resultRowHTML(r, false); });
+      html += '</div>';
+    });
+    document.getElementById('resultsBody').innerHTML = html;
+  }
+
+  document.getElementById('loginForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    errorMsg.classList.add('hidden');
+    var phone = normPhone(phoneInput.value);
+    var pass = passwordInput.value;
+
+    if(phone.length !== 10){
+      errorMsg.textContent = "Please enter a valid 10-digit mobile number.";
+      errorMsg.classList.remove('hidden');
+      return;
+    }
+    if(!rows.length){
+      errorMsg.textContent = "Results have not loaded yet. Please wait a moment and try again.";
+      errorMsg.classList.remove('hidden');
+      return;
+    }
+
+    if(role === 'student'){
+      var matches = rows.filter(function(r){
+        return normPhone(r['MOBILE NUMBER']) === phone &&
+               normStr(r['SAI CONNECT ID']) === normStr(pass);
+      });
+      if(!matches.length){
+        errorMsg.textContent = "We couldn't find a matching result. Please check your mobile number and Saiconnect ID and try again.";
+        errorMsg.classList.remove('hidden');
+        return;
+      }
+      showStudentResults(matches, phoneInput.value.trim());
+    } else {
+      var tmatches = rows.filter(function(r){
+        return normPhone(r['TRAINER PHONE NUMBER']) === phone &&
+               trainerPassFromName(r['TRAINER NAME']) === normStr(pass).replace(/\s/g,'');
+      });
+      if(!tmatches.length){
+        errorMsg.textContent = "We couldn't find matching records. Please check your mobile number and password and try again.";
+        errorMsg.classList.remove('hidden');
+        return;
+      }
+      showTrainerResults(tmatches, tmatches[0]['TRAINER NAME']);
+    }
+
+    loginView.classList.add('hidden');
+    resultsView.classList.remove('hidden');
+  });
+
+  document.getElementById('logoutBtn').addEventListener('click', function(){
+    resultsView.classList.add('hidden');
+    loginView.classList.remove('hidden');
+    passwordInput.value = '';
+    errorMsg.classList.add('hidden');
+  });
+
+  setRole('student');
+})();
+</script>
+
+</body>
+</html>
